@@ -6,6 +6,111 @@ bool FFU::Exists(std::string filepath)
     return std::filesystem::exists(filepath) || file.is_open();
 }
 
+bool FFU::IsDirectory(std::string filepath)
+{
+    return std::filesystem::is_directory(filepath);
+}
+
+std::string FFU::GetExtension(std::string filepath)
+{
+    std::string extension = "";
+    for (int i = filepath.length() - 1; i >= 0; i--)
+    {
+        if (filepath[i] == '.')
+        {
+            extension = filepath.substr(i + 1, filepath.length() - i);
+            break;
+        }
+    }
+    return extension;
+}
+
+std::string FFU::GetFilename(std::string filepath)
+{
+    std::string filename = "";
+    for (int i = filepath.length() - 1; i >= 0; i--)
+    {
+        if (filepath[i] == '.')
+        {
+            filename = filepath.substr(0, i);
+            break;
+        }
+    }
+    return filename == "" ? filepath : filename;
+}
+
+std::vector<std::string> FFU::GetFilesAndDirsInDir(std::string dir)
+{
+    if (!Exists(dir)) return { NULL };
+
+    std::vector<std::string> files = {};
+    for (const auto &entry : std::filesystem::directory_iterator(dir))
+    {
+        files.push_back(entry.path().string());
+    }
+    return files;
+}
+
+std::vector<std::string> FFU::GetFilesInDir(std::string dir)
+{
+    if (!Exists(dir)) return { NULL };
+
+    std::vector<std::string> files = {};
+    for (const auto &entry : std::filesystem::directory_iterator(dir))
+    {
+        if (!IsDirectory(entry.path().string())) files.push_back(entry.path().string());
+    }
+    return files;
+}
+
+std::vector<std::string> FFU::GetDirsInDir(std::string dir)
+{
+    if (!Exists(dir)) return { NULL };
+
+    std::vector<std::string> files = {};
+    for (const auto &entry : std::filesystem::directory_iterator(dir))
+    {
+        if (IsDirectory(entry.path().string())) files.push_back(entry.path().string());
+    }
+    return files;
+}
+
+std::vector<std::string> FFU::GetFilesAndDirsInDirRecursive(std::string dir)
+{
+    if (!Exists(dir)) return { NULL };
+
+    std::vector<std::string> files = {};
+    for (const auto &entry : std::filesystem::recursive_directory_iterator(dir))
+    {
+        files.push_back(entry.path().string());
+    }
+    return files;
+}
+
+std::vector<std::string> FFU::GetFilesInDirRecursive(std::string dir)
+{
+    if (!Exists(dir)) return { NULL };
+
+    std::vector<std::string> files = {};
+    for (const auto &entry : std::filesystem::recursive_directory_iterator(dir))
+    {
+        if (!IsDirectory(entry.path().string())) files.push_back(entry.path().string());
+    }
+    return files;
+}
+
+std::vector<std::string> FFU::GetDirsInDirRecursive(std::string dir)
+{
+    if (!Exists(dir)) return { NULL };
+
+    std::vector<std::string> files = {};
+    for (const auto &entry : std::filesystem::recursive_directory_iterator(dir))
+    {
+        if (IsDirectory(entry.path().string())) files.push_back(entry.path().string());
+    }
+    return files;
+}
+
 std::string FFU::Read(std::string filepath)
 {
     std::ifstream file(filepath);
@@ -98,7 +203,10 @@ int FFU::CountLines(std::string filepath)
     std::string line = "";
     int nLines = 0;
 
-    while (std::getline(file, line)) nLines++;
+    while (std::getline(file, line)) 
+    {
+        nLines++;
+    }
 
     file.close();
     return nLines;
