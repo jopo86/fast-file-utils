@@ -47,7 +47,7 @@ namespace FFU
      *  May contain paths that require administrator permission to open!
         @param dir The path of the directory.
         @return A vector of all the paths of the files in the directory.
-        Will return { NULL } if the directory does not exist or cannot be opened.
+        Will return `{ NULL }` if the directory does not exist or cannot be opened.
     */
     std::vector<std::string> GetFilesAndDirsInDir(std::string dir);
 
@@ -55,17 +55,21 @@ namespace FFU
         @brief Gets the paths of all files only in a directory.
      *  May contain paths that require administrator permission to open!
         @param dir The path of the directory.
+        @param extensionFilter Filters the extensions of the files to return.
+        For example, if you only want .cpp and .h files then pass `{ "cpp", "h" }`.
+        Only returns files with these extensions.
+        An empty vector signifies no filter (all extensions), which is the default value.
         @return A vector of all the paths of the files in the directory.
-        Will return { NULL } if the directory does not exist or cannot be opened.
+        Will return `{ NULL }` if the directory does not exist or cannot be opened.
     */
-    std::vector<std::string> GetFilesInDir(std::string dir);
+    std::vector<std::string> GetFilesInDir(std::string dir, std::vector<std::string> extensionFilter = {});
 
     /*
         @brief Gets the paths of all subdirectories only in a directory.
      *  May contain paths that require administrator permission to open!
         @param dir The path of the directory.
         @return A vector of all the paths of the subdirectories in the directory.
-        Will return { NULL } if the directory does not exist or cannot be opened.
+        Will return `{ NULL }` if the directory does not exist or cannot be opened.
     */
     std::vector<std::string> GetDirsInDir(std::string dir);
 
@@ -74,7 +78,7 @@ namespace FFU
      *  May contain paths that require administrator permission to open!
         @param dir The path of the directory.
         @return A vector of all the paths of the files in the directory.
-        Will return { NULL } if the directory does not exist or cannot be opened.
+        Will return `{ NULL }` if the directory does not exist or cannot be opened.
     */
     std::vector<std::string> GetFilesAndDirsInDirRecursive(std::string dir);
 
@@ -82,17 +86,21 @@ namespace FFU
         @brief Gets the paths of all files only in a directory and all its subdirectories.
      *  May contain paths that require administrator permission to open!
         @param dir The path of the directory.
+        @param extensionFilter Filters the extensions of the files to return.
+        Extensions should not contain the '.' - for example, if you only want .cpp files then pass `{ "cpp" }`.
+        Only returns files with these extensions.
+        An empty vector signifies no filter (all extensions), which is the default value.
         @return A vector of all the paths of the files in the directory.
-        Will return { NULL } if the directory does not exist or cannot be opened.
+        Will return `{ NULL }` if the directory does not exist or cannot be opened.
     */
-    std::vector<std::string> GetFilesInDirRecursive(std::string dir);
+    std::vector<std::string> GetFilesInDirRecursive(std::string dir, std::vector<std::string> extensionFilter = {});
 
     /*
         @brief Gets the paths of all subdirectories only in a directory and all its subdirectories.
      *  May contain paths that require administrator permission to open!
         @param dir The path of the directory.
         @return A vector of all the paths of the subdirectories in the directory.
-        Will return { NULL } if the directory does not exist or cannot be opened.
+        Will return `{ NULL }` if the directory does not exist or cannot be opened.
     */
     std::vector<std::string> GetDirsInDirRecursive(std::string dir);
 
@@ -100,7 +108,7 @@ namespace FFU
         @brief Reads the file and returns the contents.
         @param filepath The path of the file.
         @return The text contents of the file as a string.
-        Will return NULL if the file does not exist or cannot be opened.
+        Will return `NULL` if the file does not exist or cannot be opened.
     */
     std::string Read(std::string filepath);
 
@@ -108,7 +116,7 @@ namespace FFU
         @brief Reads the file and returns the contents.
         @param filepath The path of the file.
         @return The text contents of the file as a vector of strings (lines).
-        Will return { NULL } if the file does not exist or cannot be opened.
+        Will return `{ NULL }` if the file does not exist or cannot be opened.
     */
     std::vector<std::string> ReadLines(std::string filepath);
 

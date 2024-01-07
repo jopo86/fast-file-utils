@@ -40,6 +40,10 @@ int main()
 
     std::cout << "All dirs in lib-version and subdirectories: \n---\n";
     for (std::string path : FFU::GetDirsInDirRecursive("..\\")) std::cout << path << "\n";
+    std::cout << "\n";
+
+    std::cout << "All .cpp, .exe, and .a files in fast-file-utils and subdirectories: \n---\n";
+    for (std::string path : FFU::GetFilesInDirRecursive("..\\..\\", { "cpp", "exe", "a" })) std::cout << path << "\n";
 
     return 0;
 }

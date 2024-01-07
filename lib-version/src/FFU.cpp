@@ -43,72 +43,101 @@ std::vector<std::string> FFU::GetFilesAndDirsInDir(std::string dir)
 {
     if (!Exists(dir)) return { NULL };
 
-    std::vector<std::string> files = {};
+    std::vector<std::string> paths = {};
     for (const auto &entry : std::filesystem::directory_iterator(dir))
     {
-        files.push_back(entry.path().string());
+        paths.push_back(entry.path().string());
     }
-    return files;
+    return paths;
 }
 
-std::vector<std::string> FFU::GetFilesInDir(std::string dir)
+std::vector<std::string> FFU::GetFilesInDir(std::string dir, std::vector<std::string> extensionFilter)
 {
     if (!Exists(dir)) return { NULL };
 
-    std::vector<std::string> files = {};
+    bool noFilter = extensionFilter.size() == 0;
+    std::vector<std::string> paths = {};
     for (const auto &entry : std::filesystem::directory_iterator(dir))
     {
-        if (!IsDirectory(entry.path().string())) files.push_back(entry.path().string());
+        std::string path = entry.path().string();
+        if (!IsDirectory(path))
+        {
+            if (noFilter) paths.push_back(path);
+            else for (const std::string &ext : extensionFilter)
+            {
+                if (GetExtension(path) == ext) 
+                {
+                    paths.push_back(path);
+                    break;
+                }
+            }
+        }
     }
-    return files;
+    return paths;
 }
 
 std::vector<std::string> FFU::GetDirsInDir(std::string dir)
 {
     if (!Exists(dir)) return { NULL };
 
-    std::vector<std::string> files = {};
+    std::vector<std::string> paths = {};
     for (const auto &entry : std::filesystem::directory_iterator(dir))
     {
-        if (IsDirectory(entry.path().string())) files.push_back(entry.path().string());
+        std::string path = entry.path().string();
+        if (IsDirectory(path)) paths.push_back(path);
     }
-    return files;
+    return paths;
 }
 
 std::vector<std::string> FFU::GetFilesAndDirsInDirRecursive(std::string dir)
 {
     if (!Exists(dir)) return { NULL };
 
-    std::vector<std::string> files = {};
+    std::vector<std::string> paths = {};
     for (const auto &entry : std::filesystem::recursive_directory_iterator(dir))
     {
-        files.push_back(entry.path().string());
+        std::string path = entry.path().string();
+        paths.push_back(path);
     }
-    return files;
+    return paths;
 }
 
-std::vector<std::string> FFU::GetFilesInDirRecursive(std::string dir)
+std::vector<std::string> FFU::GetFilesInDirRecursive(std::string dir, std::vector<std::string> extensionFilter)
 {
     if (!Exists(dir)) return { NULL };
 
-    std::vector<std::string> files = {};
+    bool noFilter = extensionFilter.size() == 0;
+    std::vector<std::string> paths = {};
     for (const auto &entry : std::filesystem::recursive_directory_iterator(dir))
     {
-        if (!IsDirectory(entry.path().string())) files.push_back(entry.path().string());
+        std::string path = entry.path().string();
+        if (!IsDirectory(path))
+        {
+            if (noFilter) paths.push_back(path);
+            else for (const std::string &ext : extensionFilter)
+            {
+                if (GetExtension(path) == ext) 
+                {
+                    paths.push_back(path);
+                    break;
+                }
+            }
+        }
     }
-    return files;
+    return paths;
 }
 
 std::vector<std::string> FFU::GetDirsInDirRecursive(std::string dir)
 {
     if (!Exists(dir)) return { NULL };
 
-    std::vector<std::string> files = {};
+    std::vector<std::string> paths = {};
     for (const auto &entry : std::filesystem::recursive_directory_iterator(dir))
     {
-        if (IsDirectory(entry.path().string())) files.push_back(entry.path().string());
+        std::string path = entry.path().string();
+        if (IsDirectory(path)) paths.push_back(path);
     }
-    return files;
+    return paths;
 }
 
 std::string FFU::Read(std::string filepath)
