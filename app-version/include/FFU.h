@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -139,7 +141,7 @@ namespace FFU
         @param str The string to find.
         @param filepath The path of the file.
         @return The index of the first occurence of the string.
-        Will return -1 if the file does not exist or cannot be opened.
+        Will return `-1` if the file does not exist or cannot be opened.
     */
     int Find(std::string str, std::string filepath);
 
@@ -148,7 +150,7 @@ namespace FFU
         @param str The string to count.
         @param filepath The path of the file.
         @return The number of occurences of the string.
-        Will return -1 if the file does not exist or cannot be opened.
+        Will return `-1` if the file does not exist or cannot be opened.
     */
     int CountOccurences(std::string str, std::string filepath);
 
@@ -158,7 +160,7 @@ namespace FFU
         @param str The string to count.
         @param filepath The path of the file.
         @return The number of occurences of the string.
-        Will return -1 if the file does not exist or cannot be opened.
+        Will return `-1` if the file does not exist or cannot be opened.
     */
     int CountOccurencesNoOverlap(std::string str, std::string filepath);
 
@@ -166,7 +168,7 @@ namespace FFU
         @brief Counts the number of lines in a file.
         @param filepath The path of the file.
         @return The number of lines in the file.
-        Will return -1 if the file does not exist or cannot be opened.
+        Will return `-1` if the file does not exist or cannot be opened.
     */
     int CountLines(std::string filepath);
 
@@ -174,7 +176,7 @@ namespace FFU
         @brief Counts the number of lines in a file, excluding empty lines.
         @param filepath The path of the file.
         @return The number of lines in the file, excluding empty lines.
-        Will return -1 if the file does not exist or cannot be opened.
+        Will return `-1` if the file does not exist or cannot be opened.
     */
     int CountLinesNoEmpty(std::string filepath);
 
@@ -184,7 +186,7 @@ namespace FFU
         It will be accurate if the file is just text.
         @param filepath The path of the file.
         @return The number of words in the file.
-        Will return -1 if the file does not exist or cannot be opened.
+        Will return `-1` if the file does not exist or cannot be opened.
     */
     int CountWords(std::string filepath);
 
@@ -192,7 +194,7 @@ namespace FFU
         @brief Counts the number of characters in a file.
         @param filepath The path of the file.
         @return The number of characters in the file.
-        Will return -1 if the file does not exist or cannot be opened.
+        Will return `-1` if the file does not exist or cannot be opened.
     */
     int CountChars(std::string filepath);
 
@@ -200,7 +202,7 @@ namespace FFU
         @brief Counts the number of characters in a file, excluding spaces.
         @param filepath The path of the file.
         @return The number of characters in the file, excluding spaces.
-        Will return -1 if the file does not exist or cannot be opened.
+        Will return `-1` if the file does not exist or cannot be opened.
     */
     int CountCharsNoSpaces(std::string filepath);
 }
