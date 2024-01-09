@@ -25,8 +25,9 @@ public:
     void countWords();
     void countChars();
 
-    int parseInput();
-    void err();
+    std::string input(std::string prefix = "");
+    int inputNum();
+    void err(std::string msg);
 
 private:
     bool isNumber(char c);
@@ -36,5 +37,5 @@ private:
     std::vector<std::string> paths;
     std::vector<std::string> extensionFilter;
     bool noFilter;
-
+    bool subdirs;
 };
