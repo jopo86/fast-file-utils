@@ -24,7 +24,7 @@ namespace FFU
         @return Whether the path is a directory.
         Will return false regardless if the path does not exist or cannot be opened.
     */
-    bool IsDirectory(std::string filepath);
+    bool IsDir(std::string filepath);
 
     /*
         @brief Gets the extension of a file.
@@ -146,23 +146,23 @@ namespace FFU
     int Find(std::string str, std::string filepath);
 
     /*
-        @brief Counts the number of occurences of a string in a file.
+        @brief Counts the number of occurrences of a string in a file.
         @param str The string to count.
         @param filepath The path of the file.
-        @return The number of occurences of the string.
+        @return The number of occurrences of the string.
         Will return `-1` if the file does not exist or cannot be opened.
     */
-    int CountOccurences(std::string str, std::string filepath);
+    int CountOccurrences(std::string str, std::string filepath);
 
     /*
-        @brief Counts the number of occurences of a string in a file, without overlapping.
-        Example: CountOccurencesNoOverlap("aa", <some file with "aaa">) will return 1, not 2.
+        @brief Counts the number of occurrences of a string in a file, without overlapping.
+        Example: CountoccurrencesNoOverlap("aa", <some file with "aaa">) will return 1, not 2.
         @param str The string to count.
         @param filepath The path of the file.
-        @return The number of occurences of the string.
+        @return The number of occurrences of the string.
         Will return `-1` if the file does not exist or cannot be opened.
     */
-    int CountOccurencesNoOverlap(std::string str, std::string filepath);
+    int CountOccurrencesNoOverlap(std::string str, std::string filepath);
 
     /*
         @brief Counts the number of lines in a file.

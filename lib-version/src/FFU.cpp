@@ -6,7 +6,7 @@ bool FFU::Exists(std::string filepath)
     return std::filesystem::exists(filepath) || file.is_open();
 }
 
-bool FFU::IsDirectory(std::string filepath)
+bool FFU::IsDir(std::string filepath)
 {
     return std::filesystem::is_directory(filepath);
 }
@@ -60,7 +60,7 @@ std::vector<std::string> FFU::GetFilesInDir(std::string dir, std::vector<std::st
     for (const auto &entry : std::filesystem::directory_iterator(dir))
     {
         std::string path = entry.path().string();
-        if (!IsDirectory(path))
+        if (!IsDir(path))
         {
             if (noFilter) paths.push_back(path);
             else for (const std::string &ext : extensionFilter)
@@ -84,7 +84,7 @@ std::vector<std::string> FFU::GetDirsInDir(std::string dir)
     for (const auto &entry : std::filesystem::directory_iterator(dir))
     {
         std::string path = entry.path().string();
-        if (IsDirectory(path)) paths.push_back(path);
+        if (IsDir(path)) paths.push_back(path);
     }
     return paths;
 }
@@ -111,7 +111,7 @@ std::vector<std::string> FFU::GetFilesInDirRecursive(std::string dir, std::vecto
     for (const auto &entry : std::filesystem::recursive_directory_iterator(dir))
     {
         std::string path = entry.path().string();
-        if (!IsDirectory(path))
+        if (!IsDir(path))
         {
             if (noFilter) paths.push_back(path);
             else for (const std::string &ext : extensionFilter)
@@ -135,7 +135,7 @@ std::vector<std::string> FFU::GetDirsInDirRecursive(std::string dir)
     for (const auto &entry : std::filesystem::recursive_directory_iterator(dir))
     {
         std::string path = entry.path().string();
-        if (IsDirectory(path)) paths.push_back(path);
+        if (IsDir(path)) paths.push_back(path);
     }
     return paths;
 }
@@ -190,7 +190,7 @@ int FFU::Find(std::string str, std::string filepath)
     return Read(filepath).find(str);
 }
 
-int FFU::CountOccurences(std::string str, std::string filepath)
+int FFU::CountOccurrences(std::string str, std::string filepath)
 {
     if (!Exists(filepath)) return -1;
 
@@ -207,7 +207,7 @@ int FFU::CountOccurences(std::string str, std::string filepath)
     return count;
 }
 
-int FFU::CountOccurencesNoOverlap(std::string str, std::string filepath)
+int FFU::CountOccurrencesNoOverlap(std::string str, std::string filepath)
 {
     if (!Exists(filepath)) return -1;
 
@@ -259,7 +259,7 @@ int FFU::CountWords(std::string filepath)
 {
     if (!Exists(filepath)) return -1;
 
-    return CountOccurences(" ", filepath) + CountLinesNoEmpty(filepath);
+    return CountOccurrences(" ", filepath) + CountLinesNoEmpty(filepath);
 }
 
 int FFU::CountChars(std::string filepath)
@@ -273,5 +273,5 @@ int FFU::CountCharsNoSpaces(std::string filepath)
 {
     if (!Exists(filepath)) return -1;
 
-    return CountChars(filepath) - CountOccurences(" ", filepath);
+    return CountChars(filepath) - CountOccurrences(" ", filepath);
 }

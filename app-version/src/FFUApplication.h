@@ -19,23 +19,19 @@ public:
     void listInDir();
     void read();
     void write();
-    void find();
-    void countOccurences();
+    void countOccurrences();
     void countLines();
     void countWords();
     void countChars();
 
-    std::string input(std::string prefix = "");
-    int inputNum();
     void err(std::string msg);
+    void warn(std::string msg);
 
 private:
+    std::string input(std::string prefix = "");
+    int inputNum();
+    std::vector<std::string> inputFilepaths();
+
     bool isNumber(char c);
     bool isNumber(std::string str);
-
-    std::string response;
-    std::vector<std::string> paths;
-    std::vector<std::string> extensionFilter;
-    bool noFilter;
-    bool subdirs;
 };
