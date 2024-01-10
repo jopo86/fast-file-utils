@@ -1,0 +1,1 @@
+You can choose to use the library by linking or compiling the source code with your source code. So, I have provided the source (.cpp) file as well as the lib (.a) file, you can choose whatever.
