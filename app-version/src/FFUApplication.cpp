@@ -14,6 +14,8 @@ void FFUApplication::mainMenu()
     std::cout << "FAST-FILE-UTILS by jopo86\n\n";
     CU::ResetStyle();
 
+    std::cout << "Enter '<quit>' to exit at any time.\n\n";
+
     std::cout << 
         "Select an option (enter the corresponding number):\n"
         "[0] Check if a file/directory exists\n"
@@ -23,8 +25,9 @@ void FFUApplication::mainMenu()
         "[4] Count occurrences of text in file(s)\n"
         "[5] Count lines of file(s)\n"
         "[6] Count words in file(s)\n"
-        "[7] Count characters in file(s)\n"
-        "[8] Exit\n";
+        "[7] Count characters in file(s)\n";
+    
+    // TODO: add tips (option 8)
     
 main_num_input:
     int num = inputNum();
@@ -68,16 +71,15 @@ main_num_input:
             countChars();
             mainMenu();
             break;
-        case 8: break;
     }
 }
 
 void FFUApplication::checkExistence()
 {
     CU::Clear();
-    std::cout << "\nEnter the filepath to check.\n";
+    std::cout << "\nEnter the path to check.\n";
     std::string path = input();
-    std::cout << "That file" <<  (FFU::Exists(path) ? " exists." : " does not exist or is inaccessible.");
+    std::cout << "That file/directory" <<  (FFU::Exists(path) ? " exists." : " does not exist or is inaccessible.");
 
     CU::SetColor(CU::GREEN);
     std::cout << "\nDone. Press enter to return to main menu.";
@@ -94,6 +96,11 @@ list_dir_input:
     if (!FFU::Exists(dir))
     {
         err("Directory does not exist. Please re-enter.");
+        goto list_dir_input;
+    }
+    else if (!FFU::IsDir(dir))
+    {
+        err("Path is not a directory. Please re-enter.");
         goto list_dir_input;
     }
     std::cout << "Search subdirectories? (y/n)\n";
@@ -194,7 +201,8 @@ write_file_input_reprompt:
 
 write_file_input:
     std::string path = input();
-    if (FFU::Exists(path))
+    bool exists = FFU::Exists(path);
+    if (exists)
     {
         if (FFU::IsDir(path))
         {
@@ -222,14 +230,16 @@ write_file_continue_input:
     bool append = false;
 
 write_append_input:
-    std::cout << "Append text or overwrite? (a/o)\n";
-    std::string response = input();
-    if (response == "a" || response == "A") append = true;
-    else if (response == "o" || response == "O") append = false;
-    else
-    {
-        err("Invalid response. Please enter \"a\" or \"o\".");
-        goto write_append_input;
+    if (exists) {
+        std::cout << "Append text or overwrite? (a/o)\n";
+        std::string response = input();
+        if (response == "a" || response == "A") append = true;
+        else if (response == "o" || response == "O") append = false;
+        else
+        {
+            err("Invalid response. Please enter \"a\" or \"o\".");
+            goto write_append_input;
+        }
     }
 
     std::cout << "\nEnter the text to write.\n";
@@ -396,6 +406,7 @@ std::string FFUApplication::input(std::string prefix)
     std::string response;
     std::getline(std::cin, response);
     CU::SetColor(col);
+    if (response == "<quit>") exit(0);
     return response;
 }
 
@@ -408,6 +419,7 @@ int FFUApplication::inputNum()
     std::string response;
     std::getline(std::cin, response);
     CU::SetColor(col);
+    if (response == "<quit>") exit(0);
 
     std::string responseNoSpaces;
     for (int i = 0; i < response.length(); i++)
@@ -471,6 +483,7 @@ input_file_paths_num_input:
             while (path != "-")
             {
                 path = input(prefix);
+                if (path == "<quit>") exit(0);
                 if (path != "-") paths.push_back(prefix + path);
             }
             break;
@@ -478,6 +491,7 @@ input_file_paths_num_input:
         case 2:
         {
             std::cout << "\nEnter the directory.\n";
+
 input_file_paths_case2_dir_input:
             std::string dir = input();
             if (!FFU::Exists(dir))
@@ -485,6 +499,7 @@ input_file_paths_case2_dir_input:
                 err("Directory does not exist. Please re-enter.");
                 goto input_file_paths_case2_dir_input;
             }
+
 input_file_paths_case2_subdir_input:
             std::cout << "Search subdirectories? (y/n)\n";
             std::string response = input();
@@ -502,6 +517,7 @@ input_file_paths_case2_subdir_input:
         case 3:
         {
             std::cout << "\nEnter the directory.\n";
+
 input_file_paths_case3_dir_input:
             std::string dir = input();
             if (!FFU::Exists(dir))
@@ -509,6 +525,7 @@ input_file_paths_case3_dir_input:
                 err("Directory does not exist. Please re-enter.");
                 goto input_file_paths_case3_dir_input;
             }
+
 input_file_paths_case3_subdir_input:
             std::cout << "Search subdirectories? (y/n)\n";
             std::string response = input();

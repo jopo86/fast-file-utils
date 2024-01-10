@@ -4,6 +4,7 @@
 
 #include <ConsoleUtils.h>
 #include <FFU.h>
+#include <sysinfo.h>
 
 namespace CU = ConsoleUtils;
 
