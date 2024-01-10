@@ -44,7 +44,7 @@ std::vector<std::string> FFU::GetFilesAndDirsInDir(std::string dir)
     if (!Exists(dir)) return { NULL };
 
     std::vector<std::string> paths = {};
-    for (const auto &entry : std::filesystem::directory_iterator(dir))
+    for (const auto &entry : std::filesystem::directory_iterator(dir, std::filesystem::directory_options::skip_permission_denied))
     {
         paths.push_back(entry.path().string());
     }
@@ -57,7 +57,7 @@ std::vector<std::string> FFU::GetFilesInDir(std::string dir, std::vector<std::st
 
     bool noFilter = extensionFilter.size() == 0;
     std::vector<std::string> paths = {};
-    for (const auto &entry : std::filesystem::directory_iterator(dir))
+    for (const auto &entry : std::filesystem::directory_iterator(dir, std::filesystem::directory_options::skip_permission_denied))
     {
         std::string path = entry.path().string();
         if (!IsDir(path))
@@ -81,7 +81,7 @@ std::vector<std::string> FFU::GetDirsInDir(std::string dir)
     if (!Exists(dir)) return { NULL };
 
     std::vector<std::string> paths = {};
-    for (const auto &entry : std::filesystem::directory_iterator(dir))
+    for (const auto &entry : std::filesystem::directory_iterator(dir, std::filesystem::directory_options::skip_permission_denied))
     {
         std::string path = entry.path().string();
         if (IsDir(path)) paths.push_back(path);
@@ -94,7 +94,7 @@ std::vector<std::string> FFU::GetFilesAndDirsInDirRecursive(std::string dir)
     if (!Exists(dir)) return { NULL };
 
     std::vector<std::string> paths = {};
-    for (const auto &entry : std::filesystem::recursive_directory_iterator(dir))
+    for (const auto &entry : std::filesystem::recursive_directory_iterator(dir, std::filesystem::directory_options::skip_permission_denied))
     {
         std::string path = entry.path().string();
         paths.push_back(path);
@@ -108,7 +108,7 @@ std::vector<std::string> FFU::GetFilesInDirRecursive(std::string dir, std::vecto
 
     bool noFilter = extensionFilter.size() == 0;
     std::vector<std::string> paths = {};
-    for (const auto &entry : std::filesystem::recursive_directory_iterator(dir))
+    for (const auto &entry : std::filesystem::recursive_directory_iterator(dir, std::filesystem::directory_options::skip_permission_denied))
     {
         std::string path = entry.path().string();
         if (!IsDir(path))
@@ -132,7 +132,7 @@ std::vector<std::string> FFU::GetDirsInDirRecursive(std::string dir)
     if (!Exists(dir)) return { NULL };
 
     std::vector<std::string> paths = {};
-    for (const auto &entry : std::filesystem::recursive_directory_iterator(dir))
+    for (const auto &entry : std::filesystem::recursive_directory_iterator(dir, std::filesystem::directory_options::skip_permission_denied))
     {
         std::string path = entry.path().string();
         if (IsDir(path)) paths.push_back(path);

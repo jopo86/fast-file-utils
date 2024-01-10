@@ -35,4 +35,6 @@ private:
 
     bool isNumber(char c);
     bool isNumber(std::string str);
+
+    const bool DEBUG = true;
 };

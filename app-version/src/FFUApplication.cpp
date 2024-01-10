@@ -82,15 +82,14 @@ void FFUApplication::checkExistence()
     std::cout << "That file/directory" <<  (FFU::Exists(path) ? " exists." : " does not exist or is inaccessible.");
 
     CU::SetColor(CU::GREEN);
-    std::cout << "\nDone. Press enter to return to main menu.";
+    std::cout << "\n\nDone. Press enter to return to main menu.";
     std::cin.get();
 }
 
 void FFUApplication::listInDir()
 {
     CU::Clear();
-
-    std::cout << "\nEnter the directory.\n";
+    std::cout << "Enter the directory.\n";
 list_dir_input:
     std::string dir = input();
     if (!FFU::Exists(dir))
@@ -135,13 +134,31 @@ list_num_input:
     switch (num)
     {
         case 0:
-            paths = subdirs ? FFU::GetFilesAndDirsInDirRecursive(dir) : FFU::GetFilesAndDirsInDir(dir);
+            try {
+                paths = subdirs ? FFU::GetFilesAndDirsInDirRecursive(dir) : FFU::GetFilesAndDirsInDir(dir);
+            } catch (std::filesystem::filesystem_error e) {
+                err("\nAn internal error occured. This may be a result of trying to access blocked directories.\n" + (DEBUG ? std::string(e.what()) + "\n" : "") +  "Press enter to return to main menu.");
+                std::cin.get();
+                return;
+            }
             break;
         case 1:
-            paths = subdirs ? FFU::GetFilesInDirRecursive(dir) : FFU::GetFilesInDir(dir);
+            try {
+                paths = subdirs ? FFU::GetFilesInDirRecursive(dir) : FFU::GetFilesInDir(dir);
+            } catch (std::filesystem::filesystem_error e) {
+                err("\nAn internal error occured. This may be a result of trying to access blocked directories.\n" + (DEBUG ? std::string(e.what()) + "\n" : "") +  "Press enter to return to main menu.");
+                std::cin.get();
+                return;
+            }
             break;
         case 2:
-            paths = subdirs ? FFU::GetDirsInDirRecursive(dir) : FFU::GetDirsInDir(dir);
+            try {
+                paths = subdirs ? FFU::GetDirsInDirRecursive(dir) : FFU::GetDirsInDir(dir);
+            } catch (std::filesystem::filesystem_error e) {
+                err("\nAn internal error occured. This may be a result of trying to access blocked directories.\n" + (DEBUG ? std::string(e.what()) + "\n" : "") +  "Press enter to return to main menu.");
+                std::cin.get();
+                return;
+            }
             break;
         case 3:
             std::cout << "\nEnter each extension on a new line (enter \"-\" to finish)\n";
@@ -151,19 +168,26 @@ list_num_input:
                 ext = input(".");
                 if (ext != "-") extensionFilter.push_back(ext);
             }
-            paths = subdirs ? FFU::GetFilesInDirRecursive(dir, extensionFilter) : FFU::GetFilesInDir(dir, extensionFilter);
+            try {    
+                paths = subdirs ? FFU::GetFilesInDirRecursive(dir, extensionFilter) : FFU::GetFilesInDir(dir, extensionFilter);
+            } catch (std::filesystem::filesystem_error e) {
+                err("\nAn internal error occured. This may be a result of trying to access blocked directories.\n" + (DEBUG ? std::string(e.what()) + "\n" : "") +  "Press enter to return to main menu.");
+                std::cin.get();
+                return;
+            }
             break;
         
     }
 
-    std::cout << "\n" << paths.size() << " files/directories found:\n";
+    CU::Clear();
+    std::cout << paths.size() << " files/directories found:\n";
     for (std::string path : paths)
     {
         std::cout << path << "\n";
     }
 
     CU::SetColor(CU::GREEN);
-    std::cout << "\nDone. Press enter to return to main menu.";
+    std::cout << "\nDone, found " << paths.size() << " files/directories. \nPress enter to return to main menu.";
     std::cin.get();
 }
 
@@ -256,6 +280,7 @@ void FFUApplication::countOccurrences()
 {
     CU::Clear();
     std::vector<std::string> paths = inputFilepaths();
+    if (paths.size() > 0) if (paths[0] == "<err>") return;
     std::cout << "Enter the text to search for.\n";
     std::string text = input();
     std::cout << "Count overlapping occurrences too? (y/n)\n";
@@ -299,6 +324,7 @@ void FFUApplication::countLines()
 {
     CU::Clear();
     std::vector<std::string> paths = inputFilepaths();
+    if (paths.size() > 0) if (paths[0] == "<err>") return;
     std::cout << "Count empty lines too? (y/n)\n";
 count_lines_empty_input:
     bool empty = false;
@@ -340,6 +366,7 @@ void FFUApplication::countWords()
 {
     CU::Clear();
     std::vector<std::string> paths = inputFilepaths();
+    if (paths.size() > 0) if (paths[0] == "<err>") return;
 
     std::cout << "Searching " << paths.size() << " file" << (paths.size() == 1 ? "" : "s") << "...\n";
 
@@ -370,6 +397,7 @@ void FFUApplication::countChars()
 {
     CU::Clear();
     std::vector<std::string> paths = inputFilepaths();
+    if (paths.size() > 0) if (paths[0] == "<err>") return;
 
     std::cout << "Searching " << paths.size() << " file" << (paths.size() == 1 ? "" : "s") << "...\n";
 
@@ -511,7 +539,13 @@ input_file_paths_case2_subdir_input:
                 err("Invalid response. Please enter \"y\" or \"n\".");
                 goto input_file_paths_case2_subdir_input;
             }
-            paths = subdirs ? FFU::GetFilesInDirRecursive(dir) : FFU::GetFilesInDir(dir);
+            try {
+                paths = subdirs ? FFU::GetFilesInDirRecursive(dir) : FFU::GetFilesInDir(dir);
+            } catch (std::filesystem::filesystem_error e) {
+                err("\nAn internal error occured. This may be a result of trying to access blocked directories.\n" + (DEBUG ? std::string(e.what()) + "\n" : "") +  "Press enter to return to main menu.");
+                std::cin.get();
+                return { "<err>" };
+            }
             break;
         }
         case 3:
@@ -545,7 +579,13 @@ input_file_paths_case3_subdir_input:
                 ext = input(".");
                 if (ext != "-") extensionFilter.push_back(ext);
             }
-            paths = subdirs ? FFU::GetFilesInDirRecursive(dir, extensionFilter) : FFU::GetFilesInDir(dir, extensionFilter);
+            try {
+                paths = subdirs ? FFU::GetFilesInDirRecursive(dir, extensionFilter) : FFU::GetFilesInDir(dir, extensionFilter);
+            } catch (std::filesystem::filesystem_error e) {
+                err("\nAn internal error occured. This may be a result of trying to access blocked directories.\n" + (DEBUG ? std::string(e.what()) + "\n" : "") +  "Press enter to return to main menu.");
+                std::cin.get();
+                return { "<err>" };
+            }
             break;
         }
     }
