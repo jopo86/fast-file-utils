@@ -31,13 +31,13 @@ std::string FFU::GetFilename(std::string filepath)
     int lastSlash = -1;
     for (int i = filepath.length() - 1; i >= 0; i--)
     {
-        if (filepath[i] == '.') lastDot = i;
-        else if (filepath[i] == '/' || filepath[i] == '\\') lastSlash = i;
+        if (filepath[i] == '.' && lastDot == -1) lastDot = i;
+        else if (filepath[i] == '/' || filepath[i] == '\\' && lastSlash == -1) lastSlash = i;
         if (lastDot != -1 && lastSlash != -1) break;
     }
-
-    if (lastDot != 1 && lastSlash != -1) return filepath.substr(lastSlash + 1, lastDot);
-    else if (lastDot != -1) return filepath.substr(0, lastDot);
+    
+    if (lastDot != -1 && lastSlash != -1) return filepath.substr(lastSlash + 1, lastDot - lastSlash - 1);
+    else if (lastDot != -1) return filepath.substr(0, lastDot - lastSlash - 1);
     else if (lastSlash != -1) return filepath.substr(lastSlash + 1);
     else return filepath;
 }
