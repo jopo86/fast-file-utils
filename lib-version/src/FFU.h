@@ -36,13 +36,19 @@ namespace FFU
     std::string GetExtension(std::string filepath);
 
     /*
-        @brief Gets the filename of a file, excluding the extension.
+        @brief Gets the filename of a file, excluding the directory and extension.
      *  Does not check existence of the file!
         @param filepath The path of the file.
         @return The name of the file.
         Will return the filepath if the filepath does not inlcude a '.'.
     */
     std::string GetFilename(std::string filepath);
+
+    /*
+        @brief Creates a directory.
+        @param dir The path of the directory.
+    */
+    void CreateDir(std::string dir);
 
     /*
         @brief Gets the paths of all files and subdirectories in a directory.

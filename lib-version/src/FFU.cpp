@@ -27,16 +27,24 @@ std::string FFU::GetExtension(std::string filepath)
 
 std::string FFU::GetFilename(std::string filepath)
 {
-    std::string filename = "";
+    int lastDot = -1;
+    int lastSlash = -1;
     for (int i = filepath.length() - 1; i >= 0; i--)
     {
-        if (filepath[i] == '.')
-        {
-            filename = filepath.substr(0, i);
-            break;
-        }
+        if (filepath[i] == '.') lastDot = i;
+        else if (filepath[i] == '/' || filepath[i] == '\\') lastSlash = i;
+        if (lastDot != -1 && lastSlash != -1) break;
     }
-    return filename == "" ? filepath : filename;
+
+    if (lastDot != 1 && lastSlash != -1) return filepath.substr(lastSlash + 1, lastDot);
+    else if (lastDot != -1) return filepath.substr(0, lastDot);
+    else if (lastSlash != -1) return filepath.substr(lastSlash + 1);
+    else return filepath;
+}
+
+void FFU::CreateDir(std::string dir)
+{
+    std::filesystem::create_directory(dir);
 }
 
 std::vector<std::string> FFU::GetFilesAndDirsInDir(std::string dir)
