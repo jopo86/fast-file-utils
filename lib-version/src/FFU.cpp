@@ -46,7 +46,7 @@ std::string FFU::GetFilename(std::string filepath)
 
 void FFU::CreateDir(std::string dir)
 {
-    std::filesystem::create_directory(dir);
+    std::filesystem::create_directories(dir);
 }
 
 void FFU::CopyFile(std::string from, std::string to)
