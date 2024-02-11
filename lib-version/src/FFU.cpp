@@ -3,7 +3,9 @@
 bool FFU::Exists(std::string filepath)
 {
     std::ifstream file(filepath);
-    return std::filesystem::exists(filepath) || file.is_open();
+    bool exists = std::filesystem::exists(filepath) || file.is_open();
+    file.close();
+    return exists;
 }
 
 bool FFU::IsDir(std::string filepath)
@@ -47,15 +49,25 @@ void FFU::CreateDir(std::string dir)
     std::filesystem::create_directory(dir);
 }
 
+void FFU::CopyFile(std::string from, std::string to)
+{
+    std::filesystem::copy_file(from, to, std::filesystem::copy_options::overwrite_existing);
+}
+
 std::vector<std::string> FFU::GetFilesAndDirsInDir(std::string dir)
 {
     if (!Exists(dir)) return { NULL };
 
     std::vector<std::string> paths = {};
-    for (const auto &entry : std::filesystem::directory_iterator(dir, std::filesystem::directory_options::skip_permission_denied))
+
+    auto it = std::filesystem::directory_iterator(dir, std::filesystem::directory_options::skip_permission_denied);
+
+    for (const auto &entry : it)
     {
         paths.push_back(entry.path().string());
     }
+
+    
     return paths;
 }
 

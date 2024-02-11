@@ -51,6 +51,14 @@ namespace FFU
     void CreateDir(std::string dir);
 
     /*
+        @brief Copies a file from one location to another.
+        Overwrites the file if it already exists.
+        @param from The path of the file to copy.
+        @param to The path to paste the file to.
+     */
+    void CopyFile(std::string from, std::string to);
+
+    /*
         @brief Gets the paths of all files and subdirectories in a directory.
      *  May contain paths that require administrator permission to open!
         @param dir The path of the directory.
