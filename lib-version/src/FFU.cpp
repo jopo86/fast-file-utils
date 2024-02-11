@@ -51,7 +51,8 @@ void FFU::CreateDir(std::string dir)
 
 void FFU::CopyFile(std::string from, std::string to)
 {
-    std::filesystem::copy_file(from, to, std::filesystem::copy_options::overwrite_existing);
+    if (Exists(to)) std::filesystem::remove(to);
+    std::filesystem::copy_file(from, to);
 }
 
 std::vector<std::string> FFU::GetFilesAndDirsInDir(std::string dir)
