@@ -45,6 +45,15 @@ namespace FFU
     std::string GetFilename(std::string filepath);
 
     /*
+        @brief Gets the directory of a file.
+     *  Does not check existence of the file!
+        @param filepath The path of the file.
+        @return The directory of the file.
+        Will return "" if the filepath does not inlcude a '/' or '\'.
+     */
+    std::string GetDir(std::string filepath);
+
+    /*
         @brief Creates a directory.
         @param dir The path of the directory.
     */

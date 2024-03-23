@@ -44,6 +44,21 @@ std::string FFU::GetFilename(std::string filepath)
     else return filepath;
 }
 
+std::string FFU::GetDir(std::string filepath)
+{
+    int lastSlash = -1;
+    for (int i = filepath.length() - 1; i >= 0; i--)
+    {
+        if (filepath[i] == '/' || filepath[i] == '\\')
+        {
+            lastSlash = i;
+            break;
+        }
+    }
+    if (lastSlash != -1) return filepath.substr(0, lastSlash);
+    else return "";
+}
+
 void FFU::CreateDir(std::string dir)
 {
     std::filesystem::create_directories(dir);
